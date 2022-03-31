@@ -1,62 +1,127 @@
+import {
+  createExperiencia,
+  createHabilidad,
+  createUser,
+} from "./dataLoader.js";
+
 export default class FakeDB {
   static usuarios = [
-    {
-      idUsuario: 1,
-      nombres: "Anthony Edward",
-      apellidos: "Stark",
-      correo: "tony.stark@marvel.inc",
-      ocupacion: "Ingeniero Informático en Stark Industries Inc.",
-      numeroIdentificacion: "002576007",
-      telefono: "999 555 007",
-      fechaNacimiento: "29/05/1970",
-      direccion: "10880 Malibu Point",
-      acercaDeMi:
-        "Genio, millonario, filantropo, playboy. Ingeniero Informático, mecanico y electrónico con intereses en programación y desarrollo web. Científico, inventor, amante de la tecnología. Filántropo apto a la ayuda comunitaria.",
-      imagen:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf0ix6zEXmJVplEQmRJGj-JUyd43f_uKLUU5PkzYHy4nuVuFqLELkbxbIiZkr1pAZw_qk&usqp=CAU",
-
-      contrasenia: "1234",
-    },
-
-    {
-      idUsuario: 2,
-      nombres: "Natalia Alianovna \"Natasha\"",
-      apellidos: "Romanoff",
-      correo: "natasha.romanoff@marvel.inc",
-      ocupacion: "Aente especial de Shield",
-      numeroIdentificacion: "3516852555",
-      telefono: "99665812145",
-      fechaNacimiento: "22/11/1984",
-      direccion: "S.H.I.E.L.D. Earthquaques W.D.",
-      acercaDeMi:
-        "Tengo Maestría en artes marciales y el espionaje profesional",
-      imagen:
-        "https://kihi.news/__export/1625268920373/sites/kihi/img/2021/07/02/image002_x1x.jpg_1027732563.jpg",
-
-      contrasenia: "1234",
-    },
+    createUser(
+      1,
+      "Anthony Edward",
+      "Stark",
+      "tony.stark@marvel.inc",
+      "Ingeniero Informático en Stark Industries Inc.",
+      "002576007",
+      "999 555 007",
+      new Date(1970, 4, 29),
+      "10880 Malibu Point",
+      "Genio, millonario, filantropo, playboy. Ingeniero Informático, mecanico y electrónico con intereses en programación y desarrollo web. Científico, inventor, amante de la tecnología. Filántropo apto a la ayuda comunitaria.",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf0ix6zEXmJVplEQmRJGj-JUyd43f_uKLUU5PkzYHy4nuVuFqLELkbxbIiZkr1pAZw_qk&usqp=CAU",
+      "1234"
+    ),
+    createUser(
+      2,
+      'Natalia Alianovna "Natasha"',
+      "Romanoff",
+      "natasha.romanoff@marvel.inc",
+      "Agente especial de Shield",
+      "3516852555",
+      "99665812145",
+      new Date(1984, 10, 22),
+      "S.H.I.E.L.D. Earthquaques W.D.",
+      "Tengo Maestría en artes marciales y en el espionaje profesional",
+      "https://kihi.news/__export/1625268920373/sites/kihi/img/2021/07/02/image002_x1x.jpg_1027732563.jpg",
+      "1234"
+    ),
   ];
-  static actividad = [
+  static experiencia = [
+    createExperiencia(
+      1,
+      1,
+      "Jefe de TI",
+      "Empresa laboral 1",
+      new Date(2022, 0, 10),
+      new Date(2022, 2, 10)
+    ),
+    createExperiencia(
+      2,
+      1,
+      "Asitente de TI",
+      "Empresa laboral 2",
+      new Date(2022, 2, 20),
+      new Date(2022, 8, 10)
+    ),
+    createExperiencia(
+      3,
+      2,
+      "Analista jr",
+      "Empresa laboral 3",
+      new Date(2022, 3, 7),
+      new Date(2022, 11, 10)
+    ),
+    createExperiencia(
+      4,
+      1,
+      "FrontEnd developer sr",
+      "Empresa laboral 4",
+      new Date(2020, 4, 11),
+      new Date(2020, 11, 10)
+    ),
+    createExperiencia(
+      5,
+      2,
+      "Desarrollador web jr",
+      "Empresa laboral 5",
+      new Date(2018, 6, 7),
+      new Date(2019, 5, 15)
+    ),
   ];
-  static transaccion = [
+  static habilidad = [
+    createHabilidad(
+      1,
+      1,
+      "Proactividad",
+      "Desenvomiento activo, energético en actividades grupales."
+    ),
+    createHabilidad(
+      2,
+      1,
+      "Responsabilidad",
+      "Cumplimiento de los proyectos asignados."
+    ),
+    createHabilidad(
+      3,
+      2,
+      "Puntualidad",
+      "Presentaciones antes de la hora indicada."
+    ),
+    createHabilidad(
+      4,
+      2,
+      "Coordinación",
+      "Desempeño de coordinador en proyectos de desarrollo."
+    ),
+    createHabilidad(
+      5,
+      2,
+      "Trabajo en equipo",
+      "Desenvolvimiento asertivo en grupo."
+    ),
   ];
   static idUsuarioActual = FakeDB.usuarios.length;
-  static idActividadActual = FakeDB.actividad.length;
-  static idTransaccionActual = FakeDB.transaccion.length;
+  static idExperienciaActual = FakeDB.experiencia.length;
+  static idHabilidadActual = FakeDB.habilidad.length;
 
-  // USUARIOS
-  static getUsuarioByID = (idUsuario) => {
-    const usuarioEncontrado = FakeDB.usuarios.filter(
-      (x) => x.idUsuario === idUsuario
-    );
-    if (usuarioEncontrado.length === 1) {
+  static checkResultOfSearching = (arr = [], entity = "") => {
+    if (arr.length === 1) {
       return {
         ok: true,
-        message: "El usuario fue encontrado",
-        payload: usuarioEncontrado[0],
+        message: `${entity} fue encontrado`,
+        payload: arr[0],
       };
     } else {
-      if (usuarioEncontrado.length > 1) {
+      if (arr.length > 1) {
         return {
           ok: false,
           message: "Error inesperado",
@@ -65,28 +130,38 @@ export default class FakeDB {
       } else {
         return {
           ok: false,
-          message: "No se encontro al usuario",
+          message: `${entity} no fue encontrado`,
           payload: {},
         };
       }
     }
   };
-  static updateUsuario = (idUsuario, usuarioNuevo) => {
-    const indice = 0;
+  // USUARIOS CRUD
+  static getUsuarioByID = (idUsuario) => {
+    const usuarioEncontrado = FakeDB.usuarios.findIndex(
+      (x) => x.idUsuario === idUsuario
+    );
+    return checkResultOfSearching(usuarioEncontrado, "El usuario");
+  };
+  static updateUsuario = (idUsuario = 0, usuarioNuevo = {}) => {
+    let indice = 0;
     const usuarioEncontrado = FakeDB.usuarios.filter((x) => {
       if (x.idUsuario == idUsuario) {
         return x;
       }
       indice++;
     });
+    console.log("Encontrado usuario", usuarioEncontrado);
+    console.log("Encontrado usuario en array", FakeDB.usuarios[indice], indice);
     if (usuarioEncontrado.length === 1) {
       //update
-      const usuarioActualizado = { ...usuarioEncontrado, ...usuarioNuevo };
+      const usuarioActualizado = { ...usuarioEncontrado[0], ...usuarioNuevo };
+      console.log("Actualizado usuario", usuarioActualizado);
       FakeDB.usuarios[indice] = usuarioActualizado;
       return {
         ok: true,
         message: "El usuario fue actualizado correctamente",
-        payload: usuarioActualizado,
+        payload: FakeDB.usuarios[indice],
       };
     } else {
       if (usuarioEncontrado.length > 1) {
@@ -105,18 +180,16 @@ export default class FakeDB {
     }
   };
   static deleteUsuario = (idUsuario) => {
-    const indice = 0;
+    let indice = 0;
     const usuarioEncontrado = FakeDB.usuarios.filter((x) => {
-      if (x.idUsuario === idUsuario) {
+      if (x.idUsuario == idUsuario) {
         return x;
       }
       indice++;
     });
     if (usuarioEncontrado.length === 1) {
       //delete
-      FakeDB.usuarios = FakeDB.usuarios.filter(
-        (x) => x.idUsuario !== idUsuario
-      );
+      FakeDB.usuarios = FakeDB.usuarios.filter((x) => x.idUsuario != idUsuario);
       return {
         ok: true,
         message: "El usuario fue eliminado correctamente",
@@ -139,17 +212,27 @@ export default class FakeDB {
     }
   };
   static insertUsuario = (nuevoUsuario) => {
-    const nuevoUsuarioConID = {
-      ...nuevoUsuario,
-      id: FakeDB.idUsuarioActual + 1,
-    };
-    FakeDB.idUsuarioActual++;
-    FakeDB.usuarios = [...FakeDB.usuarios, nuevoUsuarioConID];
-    return {
-      ok: true,
-      message: "El usuario se ha creado correctamente",
-      payload: nuevoUsuarioConID,
-    };
+    const newId = FakeDB.idUsuarioActual + 1;
+    try {
+      const nuevoUsuarioConID = {
+        ...nuevoUsuario,
+        idUsuario: newId,
+      };
+
+      FakeDB.usuarios = [...FakeDB.usuarios, nuevoUsuarioConID];
+      FakeDB.idUsuarioActual++;
+      return {
+        ok: true,
+        message: "El usuario se ha creado correctamente",
+        payload: nuevoUsuarioConID,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        message: "Ocurrio un error al insrtar el usuario",
+        payload: {},
+      };
+    }
   };
   static listarUsuario = () => {
     return {
@@ -158,6 +241,7 @@ export default class FakeDB {
       payload: FakeDB.usuarios,
     };
   };
+  //AUTH LOGIN
   static iniciarSesion = (correo, contrasenia) => {
     if (
       !correo ||
@@ -171,9 +255,7 @@ export default class FakeDB {
         payload: {},
       };
     }
-    const usuarioEncontrado = FakeDB.usuarios.filter(
-      (x) => x.correo === correo
-    );
+    const usuarioEncontrado = FakeDB.usuarios.filter((x) => x.correo == correo);
     if (usuarioEncontrado && usuarioEncontrado.length === 1) {
       //preguntamos contraseña
       if (usuarioEncontrado[0].contrasenia === contrasenia) {
@@ -197,175 +279,205 @@ export default class FakeDB {
       };
     }
   };
-  //ACTIVIDAD
-  static listarActividades = () => {
+  //EXPERIENCIA
+  static listarExperiencias = () => {
     return {
       ok: true,
-      message: "Todos las transacciones",
-      payload: FakeDB.actividad,
+      payload: FakeDB.experiencia,
+      message: "todas las experiencias fueron listadas",
     };
   };
-  static listarActividadXidUsuario = (idUsuario) => {
-    if (idUsuario) {
-      return {
-        ok: true,
-        message: "Todos las actividades cuyo id de usuario es " + idUsuario,
-        payload: FakeDB.actividad.filter((x) => x.idUsuario == idUsuario),
-      };
-    } else {
-      return {
-        ok: false,
-        message: "No se envio un id de usuario",
-        payload: [],
-      };
-    }
-  };
-  static insertarActividad = (
-    idUsuario,
-    denominacion,
-    monto,
-    transacciones
-  ) => {
-    if (
-      !idUsuario ||
-      !denominacion ||
-      !monto ||
-      !transacciones ||
-      transacciones.length === 0
-    ) {
-      return {
-        ok: false,
-        message: "Datos incorrectos",
-        payload: {},
-      };
-    } else {
-      const fechaActual = new Date();
-      const nuevaActividad = {
-        idActividad: FakeDB.idActividadActual + 1,
-        idUsuario,
-        denominacion,
-        monto,
-        fecha: fechaActual,
-      };
-      FakeDB.idActividadActual += 1;
-      FakeDB.actividad = [...FakeDB.actividad, nuevaActividad];
-
-      const nuevasTransaacciones = transacciones.map((tx) => {
-        const nuevaTX = {
-          ...tx,
-          idActividad: FakeDB.idActividadActual,
-          idTransaccion: FakeDB.idTransaccionActual + 1,
-        };
-        FakeDB.idTransaccionActual = +1;
-        return nuevaTX;
-      });
-      FakeDB.transaccion = [...FakeDB.transaccion, ...nuevasTransaacciones];
-      return {
-        ok: true,
-        message: "Se insertó correctamente la actividad",
-        payload: {
-          actividad: nuevaActividad,
-          transacciones: nuevasTransaacciones,
-        },
-      };
-    }
-  };
-  static updateActividad = (idActividad, denominacion) => {
-    //buscar por id
-    const actividadEncontrada = FakeDB.transaccion.filter(
-      (tx) => tx.idActividad === idActividad
+  static getExperieniaByID = (idExperiencia = 0) => {
+    const experienciaEncontrada = FakeDB.experiencia.find(
+      (x) => x.idExperiencia == idExperiencia
     );
-    if (actividadEncontrada && actividadEncontrada.length === 1) {
-      let actividadVar = actividadEncontrada[0];
-      actividadVar.denominacion = denominacion;
-
-      const listaActividadActualizada = FakeDB.transaccion.map((tx) => {
-        if (tx.idActividad == idActividad) {
-          return actividadVar;
-        } else {
-          return tx;
-        }
-      });
-
-      FakeDB.actividad = [...listaActividadActualizada];
+    if (experienciaEncontrada) {
       return {
         ok: true,
-        payload: actividadVar,
-        message: "Actividad con id " + idActividad + " actualizada",
+        message: `experiencia encontrado`,
+        payload: experienciaEncontrada,
       };
     } else {
       return {
         ok: false,
-        payload: {},
-        message: "Error al editar actividad",
-      };
-    }
-
-    //acutalizar a la fakeDB
-    //retornar el objeto actividad
-  };
-  static deleteActividad = (idActividad) => {
-    //buscar por id
-    console.log(idActividad);
-    // console.log(FakeDB.transaccion);
-    //console.log(FakeDB.transaccion.filter((tx) => tx.idActividad != idActividad));
-    FakeDB.transaccion = [
-      ...FakeDB.transaccion.filter((tx) => tx.idActividad != idActividad),
-    ];
-    FakeDB.actividad = [
-      ...FakeDB.actividad.filter((tx) => tx.idActividad != idActividad),
-    ];
-    return {
-      ok: true,
-      payload: idActividad,
-      message: "actividad y transacciones eliminadas",
-    };
-    //acutalizar a la fakeDB
-    //retornar el objeto actividad
-  };
-  //TRANSACCIONES
-  static insertarTransaccion = (nuevaTransaccion) => {
-    console.log("INSERT TX", nuevaTransaccion);
-    if (nuevaTransaccion) {
-      const nuevaTransaccionConID = {
-        ...nuevaTransaccion,
-        idTransaccion: FakeDB.idTransaccionActual + 1,
-      };
-      FakeDB.idTransaccionActual++;
-      FakeDB.transaccion = [...FakeDB.transaccion, nuevaTransaccionConID];
-      return {
-        ok: true,
-        message: "La Transaccion se ha creado correctamente",
-        payload: nuevaTransaccionConID,
-      };
-    } else {
-      return {
-        ok: false,
-        message: "No se envio data",
+        message: `Experiencia con id=${idExperiencia} no fue encontrado`,
         payload: {},
       };
     }
   };
-  static listarTransacciones = () => {
+  static getExperienciasByIDUsuario = (idUsuario = 0) => {
     return {
       ok: true,
-      message: "Todos las transacciones",
-      payload: FakeDB.transaccion,
+      message:
+        "Se listaron las experiencias del usuario cuy id es: " + idUsuario,
+      payload: FakeDB.experiencia.filter((x) => x.idUsuario == idUsuario),
     };
   };
-  static listarTransaccionesXidActividad = (idActividad) => {
-    if (idActividad) {
+  static insertarExperiencia = (nuevaExperiencia = {}) => {
+    const newId = FakeDB.idExperienciaActual + 1;
+    try {
+      const nuevaExperienciaConID = {
+        ...nuevaExperiencia,
+        idExperiencia: newId,
+      };
+      FakeDB.experiencia = [...FakeDB.experiencia, nuevaExperienciaConID];
+      FakeDB.idExperienciaActual++;
       return {
         ok: true,
-        message:
-          "Todos las transacciones cuyo id de actividad es " + idActividad,
-        payload: FakeDB.transaccion.filter((x) => x.idActividad == idActividad),
+        message: "La experiencia se ha creado correctamente",
+        payload: nuevaExperienciaConID,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        message: "Ocurrio un error al insrtar el usuario",
+        payload: {},
+      };
+    }
+  };
+  static editarExperiencia = (idExperiencia = 0, nuevaExperiencia = {}) => {
+    const index = FakeDB.experiencia.findIndex(
+      (x) => x.idExperiencia == idExperiencia
+    );
+    if (index === -1) {
+      //no se encontro
+      return {
+        ok: false,
+        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        payload: {},
+      };
+    } else {
+      FakeDB.experiencia[index] = {
+        ...FakeDB.experiencia[index],
+        ...nuevaExperiencia,
+      };
+      return {
+        ok: true,
+        message: `Se ha editado correctamente la experiencia con id: ${idExperiencia}`,
+        payload: idExperiencia,
+      };
+    }
+  };
+  static eliminarExperiencia = (idExperiencia = 0) => {
+    const index = FakeDB.experiencia.findIndex(
+      (x) => x.idExperiencia == idExperiencia
+    );
+    if (index === -1) {
+      //no se encontro
+      return {
+        ok: false,
+        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        payload: {},
+      };
+    } else {
+      FakeDB.experiencia = [
+        ...FakeDB.experiencia.filter((x) => x.idExperiencia != idExperiencia),
+      ];
+      return {
+        ok: true,
+        message: `La experiencia con id: ${idExperiencia} fue eliminada`,
+        payload: idExperiencia,
+      };
+    }
+  };
+  //HABILIDAD
+  static listarHabilidades = () => {
+    return {
+      ok: true,
+      payload: FakeDB.habilidad,
+      message: "todas las habilidades fueron listadas",
+    };
+  };
+  static getHabilidadByID = (idHabilidad = 0) => {
+    const experienciaEncontrada = FakeDB.experiencia.find(
+      (x) => x.idExperiencia == idExperiencia
+    );
+    if (experienciaEncontrada) {
+      return {
+        ok: true,
+        message: `experiencia encontrado`,
+        payload: experienciaEncontrada,
       };
     } else {
       return {
         ok: false,
-        message: "No se envió ningun id de actividad",
-        payload: [],
+        message: `Experiencia con id=${idExperiencia} no fue encontrado`,
+        payload: {},
+      };
+    }
+  };
+  static getHabilidadessByIDUsuario = (idUsuario = 0) => {
+    return {
+      ok: true,
+      message:
+        "Se listaron las experiencias del usuario cuy id es: " + idUsuario,
+      payload: FakeDB.experiencia.filter((x) => x.idUsuario == idUsuario),
+    };
+  };
+  static insertarHabilidad = (nuevaHabilidad = {}) => {
+    const newId = FakeDB.idExperienciaActual + 1;
+    try {
+      const nuevaExperienciaConID = {
+        ...nuevaExperiencia,
+        idExperiencia: newId,
+      };
+      FakeDB.experiencia = [...FakeDB.experiencia, nuevaExperienciaConID];
+      FakeDB.idExperienciaActual++;
+      return {
+        ok: true,
+        message: "La experiencia se ha creado correctamente",
+        payload: nuevaExperienciaConID,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        message: "Ocurrio un error al insrtar el usuario",
+        payload: {},
+      };
+    }
+  };
+  static editarHabilidad = (idHabilidad = 0, nuevaHabilidad = {}) => {
+    const index = FakeDB.experiencia.findIndex(
+      (x) => x.idExperiencia == idExperiencia
+    );
+    if (index === -1) {
+      //no se encontro
+      return {
+        ok: false,
+        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        payload: {},
+      };
+    } else {
+      FakeDB.experiencia[index] = {
+        ...FakeDB.experiencia[index],
+        ...nuevaExperiencia,
+      };
+      return {
+        ok: true,
+        message: `Se ha editado correctamente la experiencia con id: ${idExperiencia}`,
+        payload: idExperiencia,
+      };
+    }
+  };
+  static eliminarHabilidad = (idHabilidad = 0) => {
+    const index = FakeDB.experiencia.findIndex(
+      (x) => x.idExperiencia == idExperiencia
+    );
+    if (index === -1) {
+      //no se encontro
+      return {
+        ok: false,
+        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        payload: {},
+      };
+    } else {
+      FakeDB.experiencia = [
+        ...FakeDB.experiencia.filter((x) => x.idExperiencia != idExperiencia),
+      ];
+      return {
+        ok: true,
+        message: `La experiencia con id: ${idExperiencia} fue eliminada`,
+        payload: idExperiencia,
       };
     }
   };
