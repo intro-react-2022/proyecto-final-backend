@@ -36,13 +36,13 @@ app.get("/", (req, res) => {
 app.get("/usuario", (req, res) => {
   res.send(FakeDB.listarUsuario());
 });
-app.put("/usuario/:id", (req, res) => {
-  console.log(req.params.id, req.body);
-  res.send(FakeDB.updateUsuario(req.params.id, req.body));
+app.put("/usuario/:idUsuario", (req, res) => {
+  console.log(req.params.idUsuario, req.body);
+  res.send(FakeDB.updateUsuario(req.params.idUsuario, req.body));
 });
-app.delete("/usuario/:id", (req, res) => {
-  console.log(req.params.id, req.body);
-  res.send(FakeDB.deleteUsuario(req.params.id));
+app.delete("/usuario/:idUsuario", (req, res) => {
+  console.log(req.params.idUsuario, req.body);
+  res.send(FakeDB.deleteUsuario(req.params.idUsuario));
 });
 //AUTH LOGIN
 app.post("/usuario/auth", (req, res) => {
@@ -70,14 +70,19 @@ app.post("/experiencia", (req, res) => {
   const nuevaExperiencia = req.body;
   res.send(FakeDB.insertarExperiencia(nuevaExperiencia));
 });
-app.put("/experiencia/idExperiencia", (req, res) => {
+app.put("/experiencia/:idExperiencia", (req, res) => {
   const { idExperiencia } = req.params;
   const nuevaExperiencia = req.body;
   res.send(FakeDB.insertarExperiencia(idExperiencia, nuevaExperiencia));
 });
-app.delete("/experiencia/idExperiencia", (req, res) => {
+app.delete("/experiencia/:idExperiencia", (req, res) => {
   const { idExperiencia } = req.params;
   res.send(FakeDB.insertarExperiencia(idExperiencia));
+});
+app.post("/experiencia/cargaMasiva/:idUsuario", (req, res) => {
+  const { experiencias } = req.body;
+  const { idUsuario } = req.params;
+  res.send(FakeDB.cargaMasivaExperiencias(idUsuario, experiencias));
 });
 //HABILIDAD
 app.get("/habilidad", (req, res) => {
@@ -85,22 +90,27 @@ app.get("/habilidad", (req, res) => {
 });
 app.get("/habilidad/:idHabilidad", (req, res) => {
   const { idHabilidad } = req.params;
-  res.send(FakeDB.getExperieniaByID(idHabilidad));
+  res.send(FakeDB.getHabilidadByID(idHabilidad));
 });
 app.get("/habilidad/:idUsuario", (req, res) => {
   const { idUsuario } = req.params;
-  res.send(FakeDB.getExperienciasByIDUsuario(idUsuario));
+  res.send(FakeDB.getHabilidadessByIDUsuario(idUsuario));
 });
 app.post("/habilidad", (req, res) => {
   const nuevaHabilidad = req.body;
-  res.send(FakeDB.insertarExperiencia(nuevaHabilidad));
+  res.send(FakeDB.insertarHabilidad(nuevaHabilidad));
 });
 app.put("/habilidad/idHabilidad", (req, res) => {
   const { idHabilidad } = req.params;
   const nuevaHabilidad = req.body;
-  res.send(FakeDB.insertarExperiencia(idHabilidad, nuevaHabilidad));
+  res.send(FakeDB.editarHabilidad(idHabilidad, nuevaHabilidad));
 });
 app.delete("/habilidad/idHabilidad", (req, res) => {
   const { idHabilidad } = req.params;
-  res.send(FakeDB.insertarExperiencia(idHabilidad));
+  res.send(FakeDB.eliminarHabilidad(idHabilidad));
+});
+app.post("/habilidad/cargaMasiva/:idUsuario", (req, res) => {
+  const { habilidades } = req.body;
+  const { idUsuario } = req.params;
+  res.send(FakeDB.cargaMasivaHabilidades(idUsuario, habilidades));
 });

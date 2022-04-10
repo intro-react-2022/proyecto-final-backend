@@ -256,6 +256,7 @@ export default class FakeDB {
       };
     }
     const usuarioEncontrado = FakeDB.usuarios.filter((x) => x.correo == correo);
+    console.log(FakeDB.usuarios.map(x=>x.correo));
     if (usuarioEncontrado && usuarioEncontrado.length === 1) {
       //preguntamos contraseña
       if (usuarioEncontrado[0].contrasenia === contrasenia) {
@@ -309,7 +310,7 @@ export default class FakeDB {
     return {
       ok: true,
       message:
-        "Se listaron las experiencias del usuario cuy id es: " + idUsuario,
+        "Se listaron las experiencias del usuario cuyo id es: " + idUsuario,
       payload: FakeDB.experiencia.filter((x) => x.idUsuario == idUsuario),
     };
   };
@@ -324,13 +325,13 @@ export default class FakeDB {
       FakeDB.idExperienciaActual++;
       return {
         ok: true,
-        message: "La experiencia se ha creado correctamente",
+        message: "La experiencias se ha creado correctamente",
         payload: nuevaExperienciaConID,
       };
     } catch (error) {
       return {
         ok: false,
-        message: "Ocurrio un error al insrtar el usuario",
+        message: "Ocurrio un error al insertar la experiencia",
         payload: {},
       };
     }
@@ -380,6 +381,29 @@ export default class FakeDB {
       };
     }
   };
+  static cargaMasivaExperiencias = (idUsuario = 0, experiencias = []) => {
+    if (!idUsuario) {
+      return { ok: false, message: "Id de suario incorrecto", payload: {} };
+    }
+    if (experiencias.length === 0) {
+      return {
+        ok: false,
+        message: "No se recibieron experiencias",
+        payload: {},
+      };
+    }
+    FakeDB.experiencia = [
+      ...FakeDB.experiencia,
+      ...experiencias.map((x) => {
+        return { ...x, idUsuario, idExperiencia: ++FakeDB.idExperienciaActual };
+      }),
+    ];
+    return {
+      ok: true,
+      message: `Se registraron ${experiencias.length} experiecias para el usuario con id: ${idUsuario}`,
+      payload: experiencias.length,
+    };
+  };
   //HABILIDAD
   static listarHabilidades = () => {
     return {
@@ -389,19 +413,19 @@ export default class FakeDB {
     };
   };
   static getHabilidadByID = (idHabilidad = 0) => {
-    const experienciaEncontrada = FakeDB.experiencia.find(
-      (x) => x.idExperiencia == idExperiencia
+    const habilidadEncontrada = FakeDB.habilidad.find(
+      (x) => x.idHabilidad == idHabilidad
     );
-    if (experienciaEncontrada) {
+    if (habilidadEncontrada) {
       return {
         ok: true,
-        message: `experiencia encontrado`,
-        payload: experienciaEncontrada,
+        message: `Habilidad encontrada`,
+        payload: habilidadEncontrada,
       };
     } else {
       return {
         ok: false,
-        message: `Experiencia con id=${idExperiencia} no fue encontrado`,
+        message: `Habilidad con id: ${idHabilidad} no fue encontrado`,
         payload: {},
       };
     }
@@ -410,75 +434,98 @@ export default class FakeDB {
     return {
       ok: true,
       message:
-        "Se listaron las experiencias del usuario cuy id es: " + idUsuario,
-      payload: FakeDB.experiencia.filter((x) => x.idUsuario == idUsuario),
+        "Se listaron las habilidades del usuario cuyo id es: " + idUsuario,
+      payload: FakeDB.habilidad.filter((x) => x.idUsuario == idUsuario),
     };
   };
   static insertarHabilidad = (nuevaHabilidad = {}) => {
-    const newId = FakeDB.idExperienciaActual + 1;
+    const newId = FakeDB.idHabilidadActual + 1;
     try {
-      const nuevaExperienciaConID = {
-        ...nuevaExperiencia,
-        idExperiencia: newId,
+      const nuevaHabilidadConID = {
+        ...nuevaHabilidad,
+        idHabilidad: newId,
       };
-      FakeDB.experiencia = [...FakeDB.experiencia, nuevaExperienciaConID];
+      FakeDB.habilidad = [...FakeDB.habilidad, nuevaHabilidadConID];
       FakeDB.idExperienciaActual++;
       return {
         ok: true,
-        message: "La experiencia se ha creado correctamente",
-        payload: nuevaExperienciaConID,
+        message: "La habilidad se ha creado correctamente",
+        payload: nuevaHabilidadConID,
       };
     } catch (error) {
       return {
         ok: false,
-        message: "Ocurrio un error al insrtar el usuario",
+        message: "Ocurrio un error al insertar habilidad",
         payload: {},
       };
     }
   };
   static editarHabilidad = (idHabilidad = 0, nuevaHabilidad = {}) => {
-    const index = FakeDB.experiencia.findIndex(
-      (x) => x.idExperiencia == idExperiencia
+    const index = FakeDB.habilidad.findIndex(
+      (x) => x.idHabilidad == idHabilidad
     );
     if (index === -1) {
       //no se encontro
       return {
         ok: false,
-        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        message: `No se encontro la habilidad con id: ${idHabilidad}`,
         payload: {},
       };
     } else {
-      FakeDB.experiencia[index] = {
-        ...FakeDB.experiencia[index],
-        ...nuevaExperiencia,
+      FakeDB.habilidad[index] = {
+        ...FakeDB.habilidad[index],
+        ...nuevaHabilidad,
       };
       return {
         ok: true,
-        message: `Se ha editado correctamente la experiencia con id: ${idExperiencia}`,
-        payload: idExperiencia,
+        message: `Se ha editado correctamente la habilidad con id: ${idHabilidad}`,
+        payload: idHabilidad,
       };
     }
   };
   static eliminarHabilidad = (idHabilidad = 0) => {
-    const index = FakeDB.experiencia.findIndex(
-      (x) => x.idExperiencia == idExperiencia
+    const index = FakeDB.habilidad.findIndex(
+      (x) => x.idHabilidad == idHabilidad
     );
     if (index === -1) {
       //no se encontro
       return {
         ok: false,
-        message: `No se encontro la experiencia con id: ${idExperiencia}`,
+        message: `No se encontro la habilidad con id: ${idHabilidad}`,
         payload: {},
       };
     } else {
       FakeDB.experiencia = [
-        ...FakeDB.experiencia.filter((x) => x.idExperiencia != idExperiencia),
+        ...FakeDB.experiencia.filter((x) => x.idHabilidad != idHabilidad),
       ];
       return {
         ok: true,
-        message: `La experiencia con id: ${idExperiencia} fue eliminada`,
-        payload: idExperiencia,
+        message: `La habilidad con id: ${idHabilidad} fue eliminada`,
+        payload: idHabilidad,
       };
     }
+  };
+  static cargaMasivaHabilidades = (idUsuario = 0, habilidades = []) => {
+    if (!idUsuario) {
+      return { ok: false, message: "Id de suario incorrecto", payload: {} };
+    }
+    if (experiencias.length === 0) {
+      return {
+        ok: false,
+        message: "No se recibieron habilidades",
+        payload: {},
+      };
+    }
+    FakeDB.habilidad = [
+      ...FakeDB.habilidad,
+      ...habilidades.map((x) => {
+        return { ...x, idHabilidades: ++FakeDB.idHabilidadActual, idUsuario };
+      }),
+    ];
+    return {
+      ok: true,
+      message: `Se registraron ${habilidades.length} habilidades para el usuario con id: ${idUsuario}`,
+      payload: habilidades.length,
+    };
   };
 }
